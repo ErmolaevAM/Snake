@@ -1,4 +1,4 @@
-package logic_magik;
+package logic;
 
 import models.Frog;
 import utils.FrogType;

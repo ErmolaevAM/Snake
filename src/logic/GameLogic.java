@@ -1,4 +1,4 @@
-package logic_magik;
+package logic;
 
 import models.Frog;
 import models.Snake;
@@ -27,6 +27,7 @@ public class GameLogic implements Runnable {
         this.gameThread = new Thread(this);
         this.frogLogic = new FrogLogic(new Frog());
         this.snake = new Snake(GamePanel.WIDTH * GamePanel.HEIGHT, 10, 10, 9, 10);
+        this.pauseFlag = true;
     }
 
     public boolean isFrogLogicAlive() {
@@ -103,13 +104,36 @@ public class GameLogic implements Runnable {
         y[1] = 10;
         snake.setX(x);
         snake.setY(y);
-        pauseFlag = false;
+        pauseFlag = true;
+    }
+
+    private void processSnakeFrogIntersection() {
+        frogLogic.setAlive(false);
+        frogLogic.interruptFrogLogicThread();
+        frogLogic.createNewFrogLogicThread();
+        if (frogLogic.getFrogType() == FrogType.RED) {
+            frogLogic.interruptFrogLogicThread();
+            Thread.currentThread().interrupt();
+        } else {
+            int[] newX = snake.getX();
+            int[] newY = snake.getY();
+            newX[snake.getLength()] = newX[snake.getLength() - 1];
+            newY[snake.getLength()] = newY[snake.getLength() - 1];
+            snake.setX(newX);
+            snake.setY(newY);
+            if (frogLogic.getFrogType() == FrogType.GREEN) {
+                snake.setLength(snake.getLength() + 1);
+            } else if (frogLogic.getFrogType() == FrogType.BLUE) {
+                snake.setLength(snake.getLength() + 2);
+            }
+        }
+        System.out.println("Snake length = " + snake.getLength());
     }
 
     @Override
     public void run() {
         while (!Thread.currentThread().isInterrupted()) {
-            if (pauseFlag) {
+            if (!pauseFlag) {
                 try {
                     Thread.currentThread().sleep(150);
                 } catch (InterruptedException e) {
@@ -117,41 +141,20 @@ public class GameLogic implements Runnable {
                 }
                 snake.move();
 
-                Rectangle snkRectangle = new Rectangle(snake.getX()[0] * GamePanel.SCALE + 5,
+                Rectangle snkHeadRectangle = new Rectangle(snake.getX()[0] * GamePanel.SCALE + 5,
                         snake.getY()[0] * GamePanel.SCALE + 5, GamePanel.SCALE - 11, GamePanel.SCALE - 11);
                 Rectangle frgRectangle = new Rectangle(frogLogic.getFrogX() * GamePanel.SCALE + 5,
                         frogLogic.getFrogY() * GamePanel.SCALE + 5, GamePanel.SCALE - 11, GamePanel.SCALE - 11);
                 for (int i = 1; i < snake.getLength(); i++) {
                     Rectangle snkElem = new Rectangle(snake.getX()[i] * GamePanel.SCALE + 5,
                             snake.getY()[i] * GamePanel.SCALE + 5, GamePanel.SCALE - 11, GamePanel.SCALE - 11);
-                    if (snkRectangle.intersects(snkElem)) {
-                        /*Thread.currentThread().interrupt();
-                        frogLogic.interruptFrogLogicThread();*/
+                    if (snkHeadRectangle.intersects(snkElem)) {
                         restartGame(); //игра продолжится сначала после того, как змея съест себя
                     }
                 }
 
-                if (snkRectangle.intersects(frgRectangle)) {
-                    frogLogic.setAlive(false);
-                    frogLogic.interruptFrogLogicThread();
-                    frogLogic.createNewFrogLogicThread();
-                    if (frogLogic.getFrogType() == FrogType.RED) {
-                        frogLogic.interruptFrogLogicThread();
-                        Thread.currentThread().interrupt();
-                    } else {
-                        int[] newX = snake.getX();
-                        int[] newY = snake.getY();
-                        newX[snake.getLength()] = newX[snake.getLength() - 1];
-                        newY[snake.getLength()] = newY[snake.getLength() - 1];
-                        snake.setX(newX);
-                        snake.setY(newY);
-                        if (frogLogic.getFrogType() == FrogType.GREEN) {
-                            snake.setLength(snake.getLength() + 1);
-                        } else if (frogLogic.getFrogType() == FrogType.BLUE) {
-                            snake.setLength(snake.getLength() + 2);
-                        }
-                    }
-                    System.out.println("Snake length = " + snake.getLength());
+                if (snkHeadRectangle.intersects(frgRectangle)) {
+                    processSnakeFrogIntersection();
                 }
                 panel.repaint();
             }

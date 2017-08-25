@@ -12,7 +12,7 @@ public class Application {
         frame.setTitle("Snake");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setResizable(false);
-        frame.setSize(panel.WIDTH*panel.SCALE+7, panel.HEIGHT*panel.SCALE+30);
+        frame.setSize(panel.WIDTH * panel.SCALE + 7, panel.HEIGHT * panel.SCALE + 30);
         frame.setLocationRelativeTo(null);
         frame.add(panel);
         frame.setVisible(true);
