@@ -1,4 +1,4 @@
-package model;
+package models;
 
 import utils.FrogType;
 import view.GamePanel;
@@ -16,15 +16,12 @@ public class Frog {
     private FrogType type;
 
     public Frog() {
-        Random r = new Random();
-        type = FrogType.values()[r.nextInt(3)];
-        x = r.nextInt(GamePanel.WIDTH);
-        y = r.nextInt(GamePanel.HEIGHT);
+        changeCoordinates();
     }
 
     public void changeCoordinates() {
         Random r = new Random();
-        type = FrogType.values()[r.nextInt(3)]; //disable, maybe
+        type = FrogType.values()[r.nextInt(FrogType.values().length)];
         x = r.nextInt(GamePanel.WIDTH);
         y = r.nextInt(GamePanel.HEIGHT);
     }

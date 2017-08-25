@@ -1,8 +1,7 @@
 package logic_magik;
 
-import model.Frog;
+import models.Frog;
 import utils.FrogType;
-import view.GamePanel;
 
 /**
  * Created by Александр on 24.08.2017.

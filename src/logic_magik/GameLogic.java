@@ -1,8 +1,8 @@
 package logic_magik;
 
-import model.Frog;
-import model.Snake;
-import utils.Directions;
+import models.Frog;
+import models.Snake;
+import utils.Direction;
 import utils.FrogType;
 import view.GamePanel;
 
@@ -61,11 +61,11 @@ public class GameLogic implements Runnable {
         return snake.getLength();
     }
 
-    public Directions getSnakeDirections() {
+    public Direction getSnakeDirections() {
         return snake.getDirection();
     }
 
-    public void setSnakeDirections(Directions directions) {
+    public void setSnakeDirections(Direction directions) {
         snake.setDirection(directions);
     }
 
@@ -116,17 +116,18 @@ public class GameLogic implements Runnable {
                     e.printStackTrace();
                 }
                 snake.move();
+
                 Rectangle snkRectangle = new Rectangle(snake.getX()[0] * GamePanel.SCALE + 5,
                         snake.getY()[0] * GamePanel.SCALE + 5, GamePanel.SCALE - 11, GamePanel.SCALE - 11);
                 Rectangle frgRectangle = new Rectangle(frogLogic.getFrogX() * GamePanel.SCALE + 5,
                         frogLogic.getFrogY() * GamePanel.SCALE + 5, GamePanel.SCALE - 11, GamePanel.SCALE - 11);
-
                 for (int i = 1; i < snake.getLength(); i++) {
                     Rectangle snkElem = new Rectangle(snake.getX()[i] * GamePanel.SCALE + 5,
                             snake.getY()[i] * GamePanel.SCALE + 5, GamePanel.SCALE - 11, GamePanel.SCALE - 11);
                     if (snkRectangle.intersects(snkElem)) {
-                        Thread.currentThread().interrupt();
-                        frogLogic.interruptFrogLogicThread();
+                        /*Thread.currentThread().interrupt();
+                        frogLogic.interruptFrogLogicThread();*/
+                        restartGame(); //игра продолжится сначала после того, как змея съест себя
                     }
                 }
 

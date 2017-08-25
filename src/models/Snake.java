@@ -1,6 +1,6 @@
-package model;
+package models;
 
-import utils.Directions;
+import utils.Direction;
 import view.GamePanel;
 
 /**
@@ -12,7 +12,7 @@ public class Snake {
     private int[] y;
 
     private int length;
-    private Directions direction;
+    private Direction direction;
 
     public Snake(int max_size, int x0, int x1, int y0, int y1) {
         x = new int[max_size];
@@ -24,7 +24,7 @@ public class Snake {
         y[1] = y1;
 
         length = 2;
-        direction = Directions.LEFT;
+        direction = Direction.UP;
     }
 
     public void move() {
@@ -33,10 +33,10 @@ public class Snake {
             y[i] = y[i - 1];
         }
 
-        if (direction == Directions.UP) y[0]--;
-        if (direction == Directions.DOWN) y[0]++;
-        if (direction == Directions.LEFT) x[0]--;
-        if (direction == Directions.RIGHT) x[0]++;
+        if (direction == Direction.UP) y[0]--;
+        if (direction == Direction.DOWN) y[0]++;
+        if (direction == Direction.LEFT) x[0]--;
+        if (direction == Direction.RIGHT) x[0]++;
 
         if (x[0] > GamePanel.WIDTH-1) x[0] = 0;
         if (x[0] < 0) x[0] = GamePanel.WIDTH-1;
@@ -76,11 +76,11 @@ public class Snake {
         this.length += increment;
     }
 
-    public Directions getDirection() {
+    public Direction getDirection() {
         return direction;
     }
 
-    public void setDirection(Directions direction) {
+    public void setDirection(Direction direction) {
         this.direction = direction;
     }
 }

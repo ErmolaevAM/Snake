@@ -1,7 +1,7 @@
 package view;
 
 import logic_magik.GameLogic;
-import utils.Directions;
+import utils.Direction;
 import utils.FrogType;
 
 import javax.swing.*;
@@ -30,10 +30,10 @@ public class GamePanel extends JPanel {
             @Override
             public void keyPressed(KeyEvent e) {
                 int key = e.getKeyCode();
-                if ((key == KeyEvent.VK_UP) && (gameLogic.getSnakeDirections() != Directions.DOWN)) gameLogic.setSnakeDirections(Directions.UP);
-                if ((key == KeyEvent.VK_DOWN) && (gameLogic.getSnakeDirections() != Directions.UP)) gameLogic.setSnakeDirections(Directions.DOWN);
-                if ((key == KeyEvent.VK_LEFT) && (gameLogic.getSnakeDirections() != Directions.RIGHT)) gameLogic.setSnakeDirections(Directions.LEFT);
-                if ((key == KeyEvent.VK_RIGHT) && (gameLogic.getSnakeDirections() != Directions.LEFT)) gameLogic.setSnakeDirections(Directions.RIGHT);
+                if ((key == KeyEvent.VK_UP) && (gameLogic.getSnakeDirections() != Direction.DOWN)) gameLogic.setSnakeDirections(Direction.UP);
+                if ((key == KeyEvent.VK_DOWN) && (gameLogic.getSnakeDirections() != Direction.UP)) gameLogic.setSnakeDirections(Direction.DOWN);
+                if ((key == KeyEvent.VK_LEFT) && (gameLogic.getSnakeDirections() != Direction.RIGHT)) gameLogic.setSnakeDirections(Direction.LEFT);
+                if ((key == KeyEvent.VK_RIGHT) && (gameLogic.getSnakeDirections() != Direction.LEFT)) gameLogic.setSnakeDirections(Direction.RIGHT);
                 if (key == KeyEvent.VK_SPACE) gameLogic.setPauseFlag(!gameLogic.isPauseFlag());
                 if (key == KeyEvent.VK_ESCAPE) {
                     gameLogic.restartGame();
